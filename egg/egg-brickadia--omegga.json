@@ -1,0 +1,62 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2025-01-25T19:23:49-06:00",
+    "name": "Brickadia (Omegga)",
+    "author": "catzoo7007@gmail.com",
+    "description": null,
+    "features": null,
+    "docker_images": {
+        "brickadia:latest": "brickadia:latest"
+    },
+    "file_denylist": [],
+    "startup": "omegga",
+    "config": {
+        "files": "{\r\n    \"omegga-config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"server.port\": \"{{server.build.default.port}}\",\r\n            \"server.map\": \"{{server.build.env.MAP}}\",\r\n            \"server.branch\": \"{{server.build.env.BRANCH}}\",\r\n            \"omegga.port\": \"{{server.build.env.WEBUI_PORT}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"Server has started.\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "TAR_FILE=brickadia-launcher.tar.xz\r\nBRICKADIA_URL=https:\/\/github.com\/brickadia-community\/omegga\/raw\/old-launcher\/$TAR_FILE\r\nLAUNCHER_PATH=\/mnt\/server\/.config\/omegga\/launcher\r\nFILE=$LAUNCHER_PATH\/$TAR_FILE\r\nAUTH_DIR=\/mnt\/server\/data\/Saved\/Auth\r\n\r\napt-get install xz-utils\r\n\r\n# Setting up Brickadia\r\nmkdir -p $LAUNCHER_PATH\r\nwget $BRICKADIA_URL -P $LAUNCHER_PATH\r\ntar xJf $FILE -C $LAUNCHER_PATH\r\n\r\n# Creating a fake Auth directory\r\nmkdir -p $AUTH_DIR\r\ncd $AUTH_DIR\r\necho '' > OfflinePayload.bin\r\necho '' > OfflineSignature.bin\r\necho '' > SessionToken.bin\r\n\r\n# Creating config\r\necho '\r\nomegga:\r\n  webui: true\r\n  port: 8081\r\n  https: false\r\nserver:\r\n  port: 7777\r\n  map: Plate\r\n  branch: main-server\r\n' > \/mnt\/server\/omegga-config.yml",
+            "container": "ghcr.io\/parkervcp\/installers:debian",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Map",
+            "description": "",
+            "env_variable": "MAP",
+            "default_value": "Plate",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "WebUI Port",
+            "description": "Port of the webserver",
+            "env_variable": "WEBUI_PORT",
+            "default_value": "8081",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|integer|between:0,65535",
+            "field_type": "text"
+        },
+        {
+            "name": "Branch",
+            "description": "",
+            "env_variable": "BRANCH",
+            "default_value": "main-server",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        }
+    ]
+}
