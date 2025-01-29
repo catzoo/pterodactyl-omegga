@@ -11,8 +11,17 @@ then
 	PASS=$(sed '2q;d' user.txt)
 	rm user.txt
 	omegga auth -gl
-	omegga auth -u $USER -p $PASS
+	omegga auth -u ${USER} -p ${PASS}
 fi
+
+# Removing quotes from the config file.
+CONFIG_FILE='/home/container/omegga-config.yml'
+W_HTTPS=$(yq '.omegga.https' $CONFIG_FILE)
+W_WEBUI=$(yq '.omegga.webui' $CONFIG_FILE)
+
+yq -i ".omegga.https=${W_HTTPS}" $CONFIG_FILE
+yq -i ".omegga.webui=${W_WEBUI}" $CONFIG_FILE
+
 
 # Make internal Docker IP address available to processes.
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')

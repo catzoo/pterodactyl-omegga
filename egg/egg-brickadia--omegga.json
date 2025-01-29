@@ -4,10 +4,10 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2025-01-25T19:23:49-06:00",
+    "exported_at": "2025-01-29T08:02:51-06:00",
     "name": "Brickadia (Omegga)",
     "author": "catzoo7007@gmail.com",
-    "description": null,
+    "description": "Brickadia is a multiplayer brick building game that gives you the tools to create and play, your way or with friends! Build intricate structures, invent cool contraptions, then play in them however you'd like!",
     "features": null,
     "docker_images": {
         "brickadia:latest": "brickadia:latest"
@@ -15,7 +15,7 @@
     "file_denylist": [],
     "startup": "omegga",
     "config": {
-        "files": "{\r\n    \"omegga-config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"server.port\": \"{{server.build.default.port}}\",\r\n            \"server.map\": \"{{server.build.env.MAP}}\",\r\n            \"server.branch\": \"{{server.build.env.BRANCH}}\",\r\n            \"omegga.port\": \"{{server.build.env.WEBUI_PORT}}\"\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \"omegga-config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"server.port\": \"{{server.build.default.port}}\",\r\n            \"server.map\": \"{{server.build.env.MAP}}\",\r\n            \"omegga.webui\": \"{{server.build.env.WEBUI_ENABLED}}\",\r\n            \"omegga.https\": \"{{server.build.env.WEBUI_HTTPS}}\",\r\n            \"server.branch\": \"{{server.build.env.BRANCH}}\",\r\n            \"omegga.port\": \"{{server.build.env.WEBUI_PORT}}\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"Server has started.\"\r\n}",
         "logs": "{}",
         "stop": "^C"
@@ -30,7 +30,7 @@
     "variables": [
         {
             "name": "Map",
-            "description": "",
+            "description": "Map of the server.",
             "env_variable": "MAP",
             "default_value": "Plate",
             "user_viewable": true,
@@ -56,6 +56,26 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "WebUI Enabled",
+            "description": "Enable the Web UI",
+            "env_variable": "WEBUI_ENABLED",
+            "default_value": "false",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|in:true,false",
+            "field_type": "text"
+        },
+        {
+            "name": "WebUI https",
+            "description": "Enable https for the WebUI",
+            "env_variable": "WEBUI_HTTPS",
+            "default_value": "false",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|in:true,false",
             "field_type": "text"
         }
     ]
